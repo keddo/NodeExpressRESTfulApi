@@ -10,8 +10,12 @@ const Books = require('./models/bookModel');
 const bookRouter = express.Router();
 bookRouter.route('/books')
     .get((req, res) => {
-        const response = { welcome: "Hello welcome to the API" };
-        res.json(response);
+        Books.find((err, books) => {
+            if (err) {
+                return res.send(err);
+            }
+            return res.send(books);
+        })
     });
 app.get('/', (req, res) => {
     res.send("Welcome to my API Home page");
