@@ -15,6 +15,8 @@ app.get('/', (req, res) => {
     res.send("Welcome to my API Home page");
 });
 
+
+app.use('/api', bookRouter);
 const port = process.env.PORT || 3000;
 
 app.listen(port, () => {
