@@ -6,6 +6,7 @@ const app = express();
 app.use(morgan('tiny'));
 
 const db = mongoose.connect('mongodb://localhost:27017/bookApi');
+const Books = require('./models/bookModel');
 const bookRouter = express.Router();
 bookRouter.route('/books')
     .get((req, res) => {
