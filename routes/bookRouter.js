@@ -36,7 +36,7 @@ function routes(Books) {
         })
     });
     bookRouter.route('/books/:bookId')
-        .get((req, res) => res.json(req.body))
+        .get((req, res) => res.json(req.book))
         .put((req, res) => {
             const { book } = req;
             book.title = req.body.title;
@@ -60,6 +60,12 @@ function routes(Books) {
                 if (err)
                     return res.send(err);
                 return res.json(book);
+            });
+        })
+        .delete((req, res) => {
+            req.book.remove((err) => {
+                if (err) return res.send(err);
+                return res.sendStatus(204);
             });
         });
     return bookRouter;
