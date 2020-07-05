@@ -6,38 +6,11 @@ const app = express();
 app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 const db = mongoose.connect('mongodb://localhost:27017/bookApi');
 const Books = require('./models/bookModel');
-const bookRouter = express.Router();
-bookRouter.route('/books')
-    .post((req, res) => {
-        const book = new Books(req.body);
-        book.save();
-        return res.status(201).json(book);
-    })
-    .get((req, res) => {
-        const query = {}
-        // query.genre = query.genre.charAt(0).toUpperCase() + query.genre.slice(1, query.genre.length);  
-        if (req.query.genre) {
-            query.genre = req.query.genre;
-        }
-        Books.find(query, (err, books) => {
-            if (err) {
-                return res.send(err);
-            }
-            books.unshift({ document_size: books.length });
-            return res.send(books);
-        })
-    });
-bookRouter.route('/books/:bookId')
-    .get((req, res) => {
-        Books.findById(req.params.bookId, (err, book) => {
-            if (err) {
-                return res.send(err);
-            }
-            return res.send(book);
-        })
-    });
+const bookRouter = require('./routes/bookRouter')();
+
 app.get('/', (req, res) => {
     res.send("Welcome to my API Home page");
 });
