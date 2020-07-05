@@ -14,8 +14,14 @@ function booksController(Books) {
             if (err) {
                 return res.send(err);
             }
+            const returnBook = books.map((book) => {
+                const newBook = book.toJSON();
+                newBook.links = {};
+                newBook.links.self = `http://${req.headers.host}/api/books/${book._id}`;
+                return newBook;
+            })
             books.unshift({ document_size: books.length });
-            return res.send(books);
+            return res.send(returnBook);
         });
     }
 
