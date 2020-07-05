@@ -1,6 +1,6 @@
 const express = require('express');
 
-function routes() {
+function routes(Books) {
     const bookRouter = express.Router();
     bookRouter.route('/books')
         .post((req, res) => {

@@ -9,7 +9,7 @@ app.use(express.json());
 
 const db = mongoose.connect('mongodb://localhost:27017/bookApi');
 const Books = require('./models/bookModel');
-const bookRouter = require('./routes/bookRouter')();
+const bookRouter = require('./routes/bookRouter')(Books);
 
 app.get('/', (req, res) => {
     res.send("Welcome to my API Home page");
