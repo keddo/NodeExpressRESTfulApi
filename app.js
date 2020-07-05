@@ -4,11 +4,17 @@ const mongoose = require('mongoose');
 
 const app = express();
 app.use(morgan('tiny'));
-
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 const db = mongoose.connect('mongodb://localhost:27017/bookApi');
 const Books = require('./models/bookModel');
 const bookRouter = express.Router();
 bookRouter.route('/books')
+    .post((req, res) => {
+        const book = new Books(req.body);
+        book.save();
+        return res.status(201).json(book);
+    })
     .get((req, res) => {
         const query = {}
         // query.genre = query.genre.charAt(0).toUpperCase() + query.genre.slice(1, query.genre.length);  
@@ -19,6 +25,7 @@ bookRouter.route('/books')
             if (err) {
                 return res.send(err);
             }
+            books.unshift({ document_size: books.length });
             return res.send(books);
         })
     });
